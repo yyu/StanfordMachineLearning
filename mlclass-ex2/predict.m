@@ -16,6 +16,10 @@ p = zeros(m, 1);
 %
 
 
+probability = sigmoid(X * theta);
+
+p = floor(0.5 + probability);
+
 
 
 

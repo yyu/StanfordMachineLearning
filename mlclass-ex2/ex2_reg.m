@@ -41,6 +41,10 @@ legend('y = 1', 'y = 0')
 hold off;
 
 
+%fprintf('\nPROGRAM PAUSED. PRESS ENTER TO CONTINUE.\n');
+%pause;
+
+
 %% =========== Part 1: Regularized Logistic Regression ============
 %  In this part, you are given a dataset with data points that are not
 %  linearly separable. However, you would still like to use logistic 
