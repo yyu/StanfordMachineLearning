@@ -41,6 +41,10 @@ sel = X(rand_indices(1:100), :);
 
 displayData(sel);
 
+fprintf('y:');
+fprintf('%f\n', size(y));
+fprintf('\n');
+
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -57,6 +61,13 @@ fprintf('\nTraining One-vs-All Logistic Regression...\n')
 lambda = 0.1;
 [all_theta] = oneVsAll(X, y, num_labels, lambda);
 
+fprintf('ALL_THETA:');
+fprintf('%f\n', size(all_theta));
+%fprintf('%f\n', all_theta(:, 1:10));
+fprintf('\n');
+
+
+
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -64,6 +75,7 @@ pause;
 %% ================ Part 3: Predict for One-Vs-All ================
 %  After ...
 pred = predictOneVsAll(all_theta, X);
+
 
 fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 
