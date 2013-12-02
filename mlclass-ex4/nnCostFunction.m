@@ -62,13 +62,85 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%%%%%%%%%%%%%%%%%%%%
+% transform numbers to vectors. for example:
+% | 3 | --> | 0 0 1 0 0 0 0 0 0 0 |
+% | 1 | --> | 1 0 0 0 0 0 0 0 0 0 |
+% | 4 | --> | 0 0 0 1 0 0 0 0 0 0 |
+Y = zeros(m, num_labels);
+I = eye(num_labels);
+for i=1:m,
+    Y(i,:) = I(y(i),:);
+end;
 
+%%%%%%%%%%%%%%%%%%%%
+% preparation
+m = size(X, 1);
+n = size(X, 2);
+Theta1_m = size(Theta1, 1);
+Theta1_n = size(Theta1, 2);
+Theta2_m = size(Theta2, 1);
+Theta2_n = size(Theta2, 2);
+Y_m = size(Y, 1);
+Y_n = size(Y, 2);
 
+% printf("----------\n");
+% printf("X: %dx%d\n", m, n);
+% printf("Theta1: %dx%d\n", Theta1_m, Theta1_n);
+% printf("Theta2: %dx%d\n", Theta2_m, Theta2_n);
+% printf("Y: %dx%d\n", Y_m, Y_n);
+% printf("----------\n");
 
+%%%%%%%%%%%%%%%%%%%%
+% Forward propagation
+a1 = [ones(m, 1) X];
 
+z2 = a1 * Theta1';
+a2 = [ones(m, 1) sigmoid(z2)];
 
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
+J = ones(1, m) * (((-Y .* log(a3)) - ((1 - Y) .* log(1 - a3))) * ones(num_labels, 1)) / m;
 
+%%%%%%%%%%%%%%%%%%%%
+% regulation
+regu = 0;
+
+% for j=1:Theta1_m,
+%     for k=2:Theta1_n,
+%         regu += Theta1(j, k) ^ 2;
+%     end;
+% end;
+regu += ones(1, Theta1_m) * (Theta1(:, 2:end) .^ 2 * ones(Theta1_n-1, 1));
+
+% for j=1:Theta2_m,
+%     for k=2:Theta2_n,
+%         regu += Theta2(j, k) ^ 2;
+%     end;
+% end;
+regu += ones(1, Theta2_m) * (Theta2(:, 2:end) .^ 2 * ones(Theta2_n-1, 1));
+
+regu = regu * lambda / ( 2 * m);
+
+J = J + regu;
+
+%%%%%%%%%%%%%%%%%%%%
+% Back propagation
+delta3 = a3 - Y;
+delta2 = delta3 * Theta2 .* sigmoidGradient([ones(m,1) z2]);
+delta2 = delta2(:, 2:end);
+
+for t=1:m,
+    Theta1_grad = Theta1_grad + (delta2(t,:)' * a1(t,:));
+    Theta2_grad = Theta2_grad + (delta3(t,:)' * a2(t,:));
+end;
+
+Theta1_grad = Theta1_grad / m;
+Theta2_grad = Theta2_grad / m;
+
+Theta1_grad += [zeros(Theta1_m,1) Theta1(:,2:end)] * lambda / m;
+Theta2_grad += [zeros(Theta2_m,1) Theta2(:,2:end)] * lambda / m;
 
 
 
