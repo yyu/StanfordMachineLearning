@@ -20,12 +20,15 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
+%disp(size(X));
+%disp(size(centroids));
+%disp(ones(K, 1) * X(2,:));
 
+[m n] = size(X);
 
-
-
-
-
+for i=1:m,
+    [_, idx(i)] = min((ones(K, 1) * X(i,:) - centroids) .^ 2 * ones(n, 1));
+end
 
 % =============================================================
 

@@ -26,12 +26,13 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+printf('K: %d\n', K);
 
-
-
-
-
-
+for i=1:K,
+    printf('i: %d\n', i);
+    disp(mean(X(find(idx==i), :)));
+    centroids(i, :) = mean(X(find(idx==i), :));
+end
 
 % =============================================================
 
